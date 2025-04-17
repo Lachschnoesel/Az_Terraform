@@ -5,3 +5,7 @@ variable "application_name" {
 variable "instituion_name" {
   type = string
 }
+
+variable "primary_region" {
+  type = string
+}
