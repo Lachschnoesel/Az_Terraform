@@ -10,10 +10,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "rg-danisTest-dev"
-    storage_account_name = "stnkloksazzb"
+    resource_group_name  = "rg-danisTest-development"
+    storage_account_name = "stbuq23adnj6"
     container_name       = "important"
-    key                  = "backend-state-file"
+    key                  = "sometests"
   }
 }
 
