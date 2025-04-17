@@ -1,2 +1,2 @@
 
-instiution_name = "development"
+instituion_name = "development"
