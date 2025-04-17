@@ -9,6 +9,12 @@ terraform {
       version = "~> 3.6.3"
     }
   }
+  backend "azurerm" {
+    resource_group_name  = "rg-danisTest-dev"
+    storage_account_name = "stnkloksazzb"
+    container_name       = "important"
+    key                  = "backend-state-file"
+  }
 }
 
 # Configure the Microsoft Azure Provider
