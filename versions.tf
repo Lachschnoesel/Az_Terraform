@@ -10,10 +10,9 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "rg-danisTest-development"
     storage_account_name = "stbuq23adnj6"
     container_name       = "important"
-    key                  = "sometests"
+    key                  = "keyvault"
   }
 }
 
