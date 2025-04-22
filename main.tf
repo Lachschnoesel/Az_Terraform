@@ -28,3 +28,7 @@ resource "azurerm_network_interface" "vm1" {
     public_ip_address_id          = azurerm_public_ip.vm1.id
   }
 }
+resource "tls_private_key" "vm1" {
+  algorithm = "RSA"
+  rsa_bits  = "4096"
+}
