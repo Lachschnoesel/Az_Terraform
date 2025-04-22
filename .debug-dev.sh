@@ -1,7 +1,7 @@
 #set the descripion
 export ARM_SUBSCRIPTION_ID= "6024a9fe-ffe1-4b9d-abdc-3602ebb0a582"
 #set the application /environment
-export TF_VAR_application_name= "keyvault"
+export TF_VAR_application_name= "linuxvm"
 export TF_VAR_instituion_name= "dev"
 #set the backend
 export BACKEND_RESOURCE_GROUP="rg-terraform-state-dev"
