@@ -14,7 +14,7 @@ locals {
   second_addressspace = cidrsubnet(var.vnet-adressspace, 2, 1)
   thrid_addressspace  = cidrsubnet(var.vnet-adressspace, 2, 0)
   forth_addressspace  = cidrsubnet(var.vnet-adressspace, 2, 0)
-/*
+
 }
 resource "azurerm_subnet" "firstsubnet" {
   name                 = "snet-first"
@@ -40,5 +40,20 @@ resource "azurerm_subnet" "forthsubnet" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = [local.forth_addressspace] #each have 1/4 of the vnet, 251/255 addresses are aviable, 5 are preoccupied by azure
 }
+resource "azurerm_network_security_group" "remote_access" {
+  name                = "nsg-${var.application_name}-${var.instituion_name}-remoteaccess"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 
-*/
+  security_rule {
+    name                       = "ssh"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
