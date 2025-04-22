@@ -14,7 +14,7 @@ locals {
   second_addressspace = cidrsubnet(var.vnet-adressspace, 2, 1)
   thrid_addressspace  = cidrsubnet(var.vnet-adressspace, 2, 0)
   forth_addressspace  = cidrsubnet(var.vnet-adressspace, 2, 0)
-
+/*
 }
 resource "azurerm_subnet" "firstsubnet" {
   name                 = "snet-first"
@@ -41,3 +41,4 @@ resource "azurerm_subnet" "forthsubnet" {
   address_prefixes     = [local.forth_addressspace] #each have 1/4 of the vnet, 251/255 addresses are aviable, 5 are preoccupied by azure
 }
 
+*/
