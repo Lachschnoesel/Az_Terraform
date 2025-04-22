@@ -2,24 +2,11 @@ resource "azurerm_resource_group" "main" {
   name     = "rg-${var.application_name}-${var.instituion_name}"
   location = var.primary_region
 }
-data "azurerm_client_config" "current" {}
-
-resource "random_string" "keyvault_stuffix" {
-  length  = 6
-  upper   = false
-  special = false
-
-}
-resource "azurerm_key_vault" "main" {
-  name                = "kv-${var.application_name}-${var.instituion_name}-${random_string.keyvault_stuffix.result}"
+resource "azurerm_virtual_network" "main" {
+  name                = "vnet-${var.application_name}-${var.instituion_name}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-  tenant_id           = data.azure_client_config.current.tenant.id
-  sku_name            = "standard"
+  address_space       = ["10.44.0.0/22"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
 }
 
-resource "azurerm_role_assignment" "terraform_user" {
-  scope                = azurerm_key_vault.main.id
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
