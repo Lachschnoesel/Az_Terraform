@@ -110,5 +110,5 @@ data "azurerm_client_config" "current" {
 resource "azure_role_assignment" "entra_id_user_login" {
   scope                = azurerm_linux_virtual_machine.vm1.id
   role_definition_name = "Virtual Machien User Login"
-  principal_id         = data.azurerm_client_config.current.object_id
+  principal_id         = azuread_group.remote_access_users.object_id
 }
