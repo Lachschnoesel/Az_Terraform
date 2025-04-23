@@ -33,7 +33,7 @@ This is a small project showcasing the use of Terraform with common Azure-relate
 After initial setup with Terraform, certain VM components were recreated using `az CLI`.
 
 **Why `az CLI`?**  
-It provides **Day Zero support** for new Azure resources by translating commands directly into ARM templates, unlike `azurerm`, which introduces some latency via REST-API processing.
+It provides **Day Zero support** for new Azure resources by translating commands directly into ARM templates, unlike `azurerm`, which has to be decoded in steps to be deployed via REST api.
 
 ## 🧠 Lessons Learned
 
