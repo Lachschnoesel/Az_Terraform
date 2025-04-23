@@ -69,3 +69,63 @@ resource "azapi_resource" "vm1_nic" {
     }
   }
 }
+
+resource "tls_private_key" "vm1" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+data "azapi_resource" "devops-rg" {
+  name      = "rg-devops-dev"
+  parent_id = "/subscriptions/${data.azapi_client_config.current_User.subscription_id}"
+  type      = "Microsoft.Resources/resourceGroups@2021-04-01"
+}
+
+data "azapi_resource" "keyvautl" {
+  name      = "kv-devops-dev-222921"
+  parent_id = data.azapi_resource.network_rg.id
+  type      = "Microsoft.KeyVault/vault@2024-12-01-preview"
+}
+
+
+resource "azapi_resource" "ssh-vm-secret" {
+  type                      = "Microsoft.KeyVault/vaults/secrets@2024-12-01-preview"
+  name                      = "azapivm-ssh-private"
+  parent_id                 = data.azapi_resource.keyvautl.id
+  schema_validation_enabled = false
+  body = {
+    properties = {
+    }
+    value = tls_private_key.vm1.private_key_pem
+  }
+  lifecycle {
+    ignore_changes = [location]
+  }
+}
+
+resource "azapi_resource" "ssh-vm-public" {
+  type                      = "Microsoft.KeyVault/vaults/secrets@2024-12-01-preview"
+  name                      = "azapivm-ssh-public"
+  parent_id                 = data.azapi_resource.keyvautl.id
+  schema_validation_enabled = false
+
+  body = {
+    properties = {
+    }
+    value = tls_private_key.vm1.public_key_openssh
+  }
+  lifecycle {
+    ignore_changes = [location]
+  }
+
+}
+
+resource "azapi_resource" "symbolicname" {
+  type      = "Microsoft.Compute/virtualMachines@2024-11-01"
+  name      = "vm1${var.application_name}${var.instituion_name}"
+  location  = azapi_resource.rg01.location
+  parent_id = azapi_resource.rg01.id
+
+  body = {
+
+  }
+}
