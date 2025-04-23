@@ -1,13 +1,10 @@
 terraform {
   required_providers {
-    azureapi = {
-      source  = "azure/azureapi"
-      version = "~> 2.3.0"
+    azapi = {
+      source = "azure/azapi"
     }
   }
 }
 
-# Configure the Microsoft Azure Provider
-provider "azureapi" {
+provider "azapi" {
 }
-

@@ -17,5 +17,7 @@ terraform init \
 
 terraform workspace new $TF_VAR_instituion_name | terraform workspace select $TF_VAR_instituion_name
 
-terraform $* -var-file ./env/$TF_VAR_instituion_name.tfvars
+terraform $* -var-file ./env/dev.tfvars
 
+
+rm -rf ./terraform 
