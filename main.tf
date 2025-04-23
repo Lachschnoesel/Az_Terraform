@@ -12,7 +12,14 @@ resource "azapi_resource" "vmpip" {
   name      = "pip${var.application_name}${var.instituion_name}"
   location  = azapi_resource.rg01.location
   parent_id = azapi_resource.rg01.id
+}
 
+resource "azurerm_storage_account" "az_sa_01" {
+  name                     = "st${random_string.storageaccount_suffix.result}"
+  resource_group_name      = azurerm_resource_group.az_rg_01.name
+  location                 = azurerm_resource_group.az_rg_01.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
   body = {
     properties = {
       publicIPAllocationMethod = "Static"
