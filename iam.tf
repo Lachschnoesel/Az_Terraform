@@ -6,11 +6,17 @@ resource "azuread_group" "remote_access" {
   security_enabled = true
 }
 
-resource "azuread_group_member" "daniel_is_in_the_group" {
-  group_object_id  = azuread_group.remote_access_users.object_id
-  member_object_id = data.azuread_user.daniel.object_id
+locals {
+  remote_access_users_map = { for idx, element in var.remote_access_users : element => idx }
 }
 
-data "azuread_user" "daniel" {
-  user_principal_name = "danielhuebner1998_gmail.com#EXT#@danielhuebner1998gmail.onmicrosoft.com"
+resource "azuread_group_member" "user_is_in_the_group" {
+  for_each         = local.remote_access_users.map
+  group_object_id  = azuread_group.remote_access_users.object_id
+  member_object_id = data.azuread_user.remote_access_users[each.key].object_id
+}
+
+data "azuread_user" "USERS" {
+  for_each            = local.remote_access_users_map
+  user_principal_name = each.key
 }
