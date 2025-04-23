@@ -9,3 +9,7 @@ variable "instituion_name" {
 variable "primary_region" {
   type = string
 }
+
+variable "vnet-adressspace" {
+  type = string
+}

@@ -22,8 +22,8 @@ resource "azurerm_subnet" "firstsubnet" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = [local.first_addressspace]
 }
-resource "azurerm_subnet" "secoundsubnet" {
-  name                 = "snet-second"
+resource "azurerm_subnet" "bastion" {
+  name                 = "AzureBastionSubnet"
   resource_group_name  = azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = [local.second_addressspace]
@@ -64,4 +64,24 @@ resource "azurerm_subnet_network_security_group_association" "first_remote_acces
 
 data "http" "my_ip" {
   url = "https://ifconfig.me/ip"
+}
+
+resource "azurerm_public_ip" "bastion" {
+  name                = "pip-${var.application_name}-${var.instituion_name}-bastion"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
+resource "azurerm_bastion_host" "main" {
+  name                = "examplebastion"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  ip_configuration {
+    name                 = "configuration"
+    subnet_id            = azurerm_subnet.bastion.id
+    public_ip_address_id = azurerm_public_ip.bastion.id
+  }
 }
