@@ -8,5 +8,9 @@ resource "azuread_group" "remote_access" {
 
 resource "azuread_group_member" "daniel_is_in_the_group" {
   group_object_id  = azuread_group.remote_access_users.object_id
-  member_object_id = data.azuread_client_config.current.object_id
+  member_object_id = data.azuread_user.daniel.object_id
+}
+
+data "azuread_user" "daniel" {
+  user_principal_name = "danielhuebner1998_gmail.com#EXT#@danielhuebner1998gmail.onmicrosoft.com"
 }
