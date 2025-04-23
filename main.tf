@@ -32,17 +32,37 @@ resource "tls_private_key" "vm1" {
   algorithm = "RSA"
   rsa_bits  = "4096"
 }
-
+/*
 resource "local_file" "private_key" {
   content         = tls_private_key.vm1.private_key_pem
   filename        = pathexpand("~/.ssh/vm1")
   file_permission = "0600"
 }
 resource "local_file" "public_key" {
-  content         = tls_private_key.vm1.private_key_pem
+  content         = tls_private_key.vm1.public_key_openssh
   filename        = pathexpand("~/.ssh/vm1.pub")
   file_permission = "0600"
 }
+*/
+
+data "azurerm_key_vault" "main" {
+  name                = "kv-devops-dev-dyffse"
+  resource_group_name = "rg-devops-dev"
+}
+
+resource "azurerm_key_vault_secret" "main" {
+  name         = "vm1-private-key"
+  value        = tls_private_key.vm1.private_key_pem
+  key_vault_id = data.azurerm_key_vault.main.id
+}
+
+resource "azurerm_key_vault_secret" "main" {
+  name         = "vm1-public-key"
+  value        = tls_private_key.vm1.public_key_openssh
+  key_vault_id = data.azurerm_key_vault.main.id
+}
+
+
 
 
 resource "azurerm_linux_virtual_machine" "vm1" {
