@@ -126,6 +126,52 @@ resource "azapi_resource" "symbolicname" {
   parent_id = azapi_resource.rg01.id
 
   body = {
+    properties = {
+      networkProfile = {
+        hardwareProfile = {
+          vmSize = "Standard_D2_v2_Promo"
+        }
+        networkInterfaces = [
+          {
+            id = azapi_resource.vm1_nic.id
+          }
+        ]
+      }
+      osProfile = {
+        adminusername = "adminuser"
+        computername  = "vm1${var.application_name}${var.instituion_name}"
+        linuxConfiguation = {
+          ssh = {
+            publicKeys = [
+              {
+                keydata = tls_private_key.vm1.public_key_openssh
+                path    = "/home/adminuser/.ssh/authorzed_keys"
+              }
+
+            ]
+          }
+        }
+
+      }
+      storageProfile = {
+        imageReference = {
+          offer     = "Canonical"
+          publisher = "0001-com-ubunto-server-jammy"
+          sku       = "22-04-lts"
+          version   = "latest"
+
+        }
+        osDisk = {
+          caching      = "ReadWrite"
+          createOption = "FromImage"
+          managedDisk = {
+            storageAccountType = "Standard_LRS"
+          }
+        }
+
+      }
+
+    }
 
   }
 }
